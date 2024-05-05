@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+<!-- Product section-->
+<section class="py-5">
+  <div class="container px-4 px-lg-5 my-5">
+    <div class="row gx-4 gx-lg-5 align-items-center">
+      <div class="col-md-6"><img class="card-img-top mb-5 mb-md-0"
+          src="{{url_for('static', filename='/asset/'+item.image)}}" alt="{{ item.name }}"
+          style="max-height: 40vh; object-fit: contain;"></div>
+      <div class="col-md-6">
+        <h1 class="display-5 fw-bolder">{{ item.name }}</h1>
+        <div class="fs-5 mb-5">
+          <span class="text-decoration-line-through">{{ item.price }}</span>
+        </div>
+        <p class="lead">{{ item.description }}</p>
+        <div class="d-flex">
+          <a href="/add_to_cart/{{item.id}}" class="btn btn-outline-dark" style="margin: 5px 0 5px 0;">Ajouter au Panier</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Commentaires -->
+<div class="my-3 p-3 bg-white rounded box-shadow">
+  <h6 class="border-bottom border-gray mb-0 pb-3">Commentaires</h6>
+
+  <!-- Section commentaires -->
+  {% for comment in comments %}
+  {% if comment.user_id == current_user.id %}
+  <div class="media pt-3 border-bottom border-gray d-flex flex-row justify-content-between">
+    <p class="media-body pb-3 mb-0 small lh-125"><strong class="d-block text-gray-dark">{{ comment.user_name
+        }}</strong>{{ comment.description }}</p>
+    <div class="comment-buttons">
+      <button type="button" class="btn btn-primary mt-2 mb-3" data-bs-toggle="modal"
+        data-bs-target="#ModifyCommentModal"><i class="fa fa-edit"></i></button>
+      <button type="button" class="btn btn-outline-danger mt-2 mb-3"
+        onclick="window.location='/delete_comment/{{ comment.id }}'"><i class="fa fa-trash"></i></button>
+    </div>
+  </div>
+  {% elif current_user.admin == 1: %}
+  <div class="comment border-bottom border-gray">
+    <div class="comment-content d-flex flex-row justify-content-between mt-2">
+      <p class="media-body pb-3 mb-0 small lh-125"><strong class="d-block text-gray-dark">{{ comment.user_name
+          }}</strong>{{ comment.description }}</p>
+      <div class="comment-buttons">
+        <button type="button" class="btn btn-outline-danger mt-2 mb-3"
+          onclick="window.location='/delete_comment/{{ comment.id }}'"><i class="fa fa-trash"></i></button>
+      </div>
+    </div>
+  </div>
+  {% else %}
+  <div class="media text-muted pt-3 border-bottom border-gray">
+    <p class="media-body pb-3 mb-0 small lh-125"><strong class="d-block text-gray-dark">{{comment.user_name
+        }}</strong>{{comment.description}}</p>
+  </div>
+  {% endif %}
+
+  <!-- Modal modif commentaire -->
+  <div class="modal fade" id="ModifyCommentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Mon Commentaire</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form action="/modify_comment/{{ comment.id }}" method="post">
+            <textarea name="content" class="form-control" id="exampleFormControlTextarea1"
+              rows="3">{{ comment.description }}</textarea>
+            <button type="submit" class="btn btn-primary mt-2"> Modifier </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% endfor %}
+
+
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-primary mt-2 mb-3" data-bs-toggle="modal" data-bs-target="#CommentModal">
+    Ajouter un Commentaire
+  </button>
+
+  <!-- Modal -->
+  <div class="modal fade" id="CommentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Mon Commantaire</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form method="post" action="/add_comment/{{item.id}}">
+            <textarea name="content" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+          <button type="submit" class="btn btn-primary">Ajouter</button>
+        </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

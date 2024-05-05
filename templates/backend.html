@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+{% block content %}
+
+{% if current_user.admin == 1: %}
+<div class="container mt-5 pb-3">
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Nom</th>
+      <th scope="col">Prix</th>
+      <th scope="col">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for item in all_items: %}
+    <tr>
+      <th scope="row">{{ item.id }}</th>
+      <td>{{ item.name }}</td>
+      <td>{{ item.prix }}</td>
+      <td>
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editModal-{{ item.id }}">Modifier</button>
+        <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal-{{ item.id }}">Supprimer</button>
+      </td>
+      <div class="modal fade" id="editModal-{{ item.id }}" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <!-- Contenu du formulaire de modification -->
+            <div class="modal-header">
+              <h5 class="modal-title" id="deleteModalLabel">Modification du produit</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form action="/modify_item/{{ item.id }}" method="post" enctype="multipart/form-data">
+                <label for="name">Nom</label>
+                <input type="text" class="form-control" id="name" name="name" value="{{ item.name }}">
+                <label for="description">Description</label>
+                <input type="text" class="form-control" id="description" name="description"
+                  value="{{ item.description }}">
+                <label for="price">Prix</label>
+                <input type="text" class="form-control" id="price" name="price" value="{{ item.prix }}">
+                <label for="price">Image</label>
+                <br>
+                <img src="{{url_for('static', filename='asset/'+item.image)}}" style="width: 200px;">
+                <input type="file" class="form-control" id="pic" accept=".png, .jpg, .jpeg" name="pic">
+                <br>
+                <button type="submit" class="btn btn-primary">Modifier</button>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade" id="deleteModal-{{ item.id }}" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <!-- Contenu du message de confirmation de suppression -->
+            <div class="modal-header">
+              <h5 class="modal-title" id="deleteModalLabel">Confirmation de Suppression</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              Êtes-vous sûr de vouloir supprimer ce produit ?
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+              <button type="button" class="btn btn-danger"
+                onclick="window.location='/delete_item/{{ item.id }}'">Supprimer</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+  Ajouter un Produit
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Nouveau Produit</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form method="post" action="/additem" enctype="multipart/form-data">
+          <input type="name" name="name" placeholder="Nom du produit"><br>
+          <input type="number" name="prix" placeholder="Prix" step=".01"><br>
+          <input type="text" name="description" placeholder="Description"><br>
+          <input type="file" name="image" accept=".png, .jpeg, .jpg, .webp"><br>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Save changes</button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>
+</div>
+
+
+
+
+{% else %}
+<div><h3>Comment êtes vous arrivé là ?</h3></div>
+
+{% endif %}
+
+{% endblock %}

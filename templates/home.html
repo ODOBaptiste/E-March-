@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+
+<div class="row" style="justify-content: center;">
+  <div class=" d-flex justify-content-center mt-3"><h1>Bienvenue dans la boutique</h1></div>
+  {% for item in items %}
+    <div class="card bg-light border border-secondary rounder" style="width: 18rem; padding: 20px; margin: 20px;">
+      <a href="/item_info/{{item.id}}"><img class="card-img-top" src="static/asset/{{ item.image }}" style="height: 200px; object-fit: contain" alt="Card image cap"></a>
+      <div class="card-body">
+        <h5 class="card-title">{{ item.name }}</h5>
+        <p class="card-text">{{ item.description }}</p>
+      </div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item bg-light">Prix : {{ item.prix }}€</li>
+      </ul>
+      <div class="card-body">
+        <a href="/add_to_cart/{{item.id}}" class="btn btn-primary" style="margin: 5px 0 5px 0;">Ajouter au Panier</a><br>
+        <a href="/add_to_wl/{{item.id}}" class="btn btn-info" style="margin: 5px 0 5px 0;">Liste d'envie</a>
+      </div>
+    </div>
+  {% endfor %}
+</div>
+
+
+
+{% endblock %}
