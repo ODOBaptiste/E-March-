@@ -1,6 +1,0 @@
-projectKey=EMARCHE
-serverUrl=http://localhost:9000
-serverVersion=10.4.1.88267
-dashboardUrl=http://localhost:9000/dashboard?id=EMARCHE
-ceTaskId=8595c958-be5c-44ea-8db4-1a40099ec764
-ceTaskUrl=http://localhost:9000/api/ce/task?id=8595c958-be5c-44ea-8db4-1a40099ec764
