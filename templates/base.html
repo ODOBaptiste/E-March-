@@ -28,9 +28,9 @@
         <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">{{
           current_user.username }}</a>
         <ul class="dropdown-menu dropdown-menu-lg-end">
-          <li><a class="dropdown-item" href="{{url_for('account')}}">Compte<i class="fa-solid fa-user"></i></a></li>
+          <li><a class="dropdown-item" href="{{url_for('account')}}">Compte <i class="fa-solid fa-user"></i></a></li>
           {% if current_user.admin ==1 %}
-          <li><a class="dropdown-item" href="{{url_for('backend')}}">Backend 🏳️‍🌈</a></li>
+          <li><a class="dropdown-item" href="{{url_for('backend')}}">Backend 📦</a></li>
           {% else %}
           <li><a class="dropdown-item" href="{{url_for('panier')}}">Panier <i class="fa-solid fa-cart-shopping"></i></a>
           </li>
